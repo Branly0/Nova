@@ -10,7 +10,7 @@ class ChatProvider(ABC):
     """Anything that can turn a message history into a streamed reply."""
 
     def load(self) -> None:
-        """Optional warm-up (e.g. load a model into memory)."""
+        """Optional warm-up (e.g. nova is up and ready)."""
 
     @abstractmethod
     def stream(self, messages: list[Message]) -> Iterator[str]:

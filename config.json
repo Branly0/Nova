@@ -5,5 +5,18 @@
   "n_threads": null,
   "temperature": 0.7,
   "max_tokens": 512,
-  "system_prompt": "You are Nova, a concise and helpful personal assistant."
+  "system_prompt": "You are Nova, a concise and helpful personal assistant.",
+  "address_as": "sir",
+  "stt": {
+    "engine": "faster-whisper",
+    "model": "small",
+    "language": "en",
+    "device": "cuda",
+    "compute_type": "int8_float32"
+  },
+  "apps": {
+    "notepad": "notepad.exe",
+    "calculator": "calc.exe",
+    "file explorer": "explorer.exe"
+  }
 }

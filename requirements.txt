@@ -1,1 +1,7 @@
-llama-cpp-python==0.3.36
+# llama-cpp-python==0.3.36
+faster-whisper
+sounddevice
+numpy
+psutil
+nvidia-cublas-cu12
+nvidia-cudnn-cu12==9.*

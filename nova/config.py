@@ -9,6 +9,15 @@ ROOT = Path(__file__).resolve().parent.parent
 
 
 @dataclass
+class STTSettings:
+    engine: str
+    model: str
+    language: str | None
+    device: str
+    compute_type: str
+
+
+@dataclass
 class Settings:
     provider: str
     model_path: Path
@@ -17,6 +26,9 @@ class Settings:
     temperature: float
     max_tokens: int
     system_prompt: str
+    address_as: str
+    stt: STTSettings
+    apps: dict[str, str]
 
 
 def _find_model(models_dir: Path) -> Path:
@@ -36,6 +48,16 @@ def load_settings(path: Path = ROOT / "config.json") -> Settings:
     model = raw.get("model_path")
     model_path = (ROOT / model) if model else _find_model(ROOT / "models")
     threads = raw.get("n_threads") or max(1, (os.cpu_count() or 2) // 2)
+
+    stt_raw = raw.get("stt", {})
+    stt = STTSettings(
+        engine=stt_raw.get("engine", "faster-whisper"),
+        model=stt_raw.get("model", "small"),
+        language=stt_raw.get("language", "en"),  # explicit null means auto-detect
+        device=stt_raw.get("device", "cuda"),
+        compute_type=stt_raw.get("compute_type", "int8_float32"),
+    )
+
     return Settings(
         provider=raw.get("provider", "local"),
         model_path=model_path,
@@ -44,4 +66,7 @@ def load_settings(path: Path = ROOT / "config.json") -> Settings:
         temperature=raw.get("temperature", 0.7),
         max_tokens=raw.get("max_tokens", 512),
         system_prompt=raw.get("system_prompt", "You are a helpful assistant."),
+        address_as=raw.get("address_as", "sir"),
+        stt=stt,
+        apps=raw.get("apps", {}),
     )
