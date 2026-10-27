@@ -4,6 +4,7 @@ import sys
 import time
 
 from .commands import CommandRouter, is_phrase
+from .triage import classify
 from .config import load_settings
 from .providers import create_provider
 from .speech import create_stt
@@ -44,6 +45,7 @@ def run_turn(text: str, history: list, provider, router: CommandRouter) -> None:
         history.append({"role": "assistant", "content": answer})
         return
 
+    print(f"[triage: {classify(text)}]")
     reply: list[str] = []
     print("nova> ", end="", flush=True)
     start = time.time()
@@ -60,7 +62,10 @@ def run_turn(text: str, history: list, provider, router: CommandRouter) -> None:
         return
 
     elapsed = max(time.time() - start, 1e-6)
-    print(f"\n({len(reply)} tokens, {len(reply) / elapsed:.1f} tok/s)\n")
+    print(f"\n({len(reply)} tokens, {len(reply) / elapsed:.1f} tok/s)")
+    if provider.last_confidence:
+        print(f"[confidence: {provider.last_confidence}]")
+    print()
     history.append({"role": "assistant", "content": "".join(reply)})
 
 

@@ -9,6 +9,9 @@ Message = dict[str, str]
 class ChatProvider(ABC):
     """Anything that can turn a message history into a streamed reply."""
 
+    # Optional: providers that can measure confidence set this when stream() finishes.
+    last_confidence = None
+
     def load(self) -> None:
         """Optional warm-up (e.g. nova is up and ready)."""
 

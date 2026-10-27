@@ -26,6 +26,8 @@ class Settings:
     temperature: float
     max_tokens: int
     system_prompt: str
+    thinking: bool
+    measure_confidence: bool
     address_as: str
     stt: STTSettings
     apps: dict[str, str]
@@ -66,6 +68,8 @@ def load_settings(path: Path = ROOT / "config.json") -> Settings:
         temperature=raw.get("temperature", 0.7),
         max_tokens=raw.get("max_tokens", 512),
         system_prompt=raw.get("system_prompt", "You are a helpful assistant."),
+        thinking=raw.get("thinking", False),
+        measure_confidence=raw.get("measure_confidence", False),
         address_as=raw.get("address_as", "sir"),
         stt=stt,
         apps=raw.get("apps", {}),

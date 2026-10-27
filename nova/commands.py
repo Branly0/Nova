@@ -43,6 +43,27 @@ def _status() -> str:
         parts.append(
             f"battery {battery.percent:.0f}%" + (" (charging)" if battery.power_plugged else "")
         )
+
+    # --- NEW: GPU stats ---
+    try:
+        out = subprocess.run(
+            [
+                "nvidia-smi",
+                "--query-gpu=name,utilization.gpu,memory.used,memory.total,temperature.gpu",
+                "--format=csv,noheader,nounits",
+            ],
+            capture_output=True,
+            text=True,
+            timeout=5,
+            check=True,
+        ).stdout
+        for line in out.strip().splitlines():
+            name, util, used, total, temp = [f.strip() for f in line.rsplit(",", 4)]
+            parts.append(f"GPU {name} ({util}% load, VRAM {used}/{total} MiB, {temp}°C)")
+    except (subprocess.SubprocessError, OSError, ValueError):
+        pass  # no NVIDIA GPU or driver: just leave the GPU part out
+    # --- end of new part ---
+
     return "System status: " + ", ".join(parts) + "."
 
 
