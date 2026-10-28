@@ -2,10 +2,12 @@ from __future__ import annotations
 
 import sys
 import time
+import argparse
 
 from .commands import CommandRouter, is_phrase
 from .triage import classify
-from .config import load_settings
+from pathlib import Path
+from .config import ROOT, configured_model_path, list_models, load_settings, match_model
 from .providers import create_provider
 from .speech import create_stt
 from .speech.recorder import Recorder
@@ -68,10 +70,42 @@ def run_turn(text: str, history: list, provider, router: CommandRouter) -> None:
     print()
     history.append({"role": "assistant", "content": "".join(reply)})
 
+def choose_model(arg: str | None) -> Path | None:
+    """Return a model to override the config, or None to use the config as-is."""
+    if arg:
+        return match_model(arg)
+    models = list_models()
+    if configured_model_path() or len(models) <= 1:
+        return None
+    print("Models found:")
+    for i, p in enumerate(models, 1):
+        print(f"  {i}. {p.relative_to(ROOT / 'models')}")
+    while True:
+        answer = input("Pick a model number: ").strip()
+        if answer.isdigit() and 1 <= int(answer) <= len(models):
+            return models[int(answer) - 1]
+        print("  Not a valid number.")
+
 
 def main() -> None:
     sys.stdout.reconfigure(encoding="utf-8")
-    settings = load_settings()
+
+    parser = argparse.ArgumentParser(prog="nova")
+    parser.add_argument("--model", help="part of a model file name, e.g. 4b")
+    parser.add_argument("--list", action="store_true", help="list models and exit")
+    args = parser.parse_args()
+
+    if args.list:
+        for p in list_models():
+            print(p.relative_to(ROOT / "models"))
+        return
+
+    try:
+        override = choose_model(args.model)
+    except ValueError as exc:
+        sys.exit(str(exc))
+
+    settings = load_settings(model_override=override)
     provider = create_provider(settings)
     router = CommandRouter(settings.apps)
     stt = create_stt(settings.stt)

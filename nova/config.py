@@ -44,11 +44,38 @@ def _find_model(models_dir: Path) -> Path:
         "Several .gguf files found. Set model_path in config.json to one of:\n  " + names
     )
 
+def list_models() -> list[Path]:
+    """Every .gguf file under models/, sorted."""
+    return sorted((ROOT / "models").rglob("*.gguf"))
 
-def load_settings(path: Path = ROOT / "config.json") -> Settings:
+
+def configured_model_path(path: Path = ROOT / "config.json") -> str | None:
+    """The model_path set in config.json, or None if it's null/missing."""
+    return json.loads(path.read_text(encoding="utf-8")).get("model_path")
+
+
+def match_model(query: str) -> Path:
+    """Find the single model whose file name contains `query` (case-insensitive)."""
+    models = list_models()
+    hits = [p for p in models if query.lower() in p.name.lower()]
+    if len(hits) == 1:
+        return hits[0]
+    pool = hits or models
+    names = "\n  ".join(p.name for p in pool)
+    reason = "matches several models" if hits else "matches no model"
+    raise ValueError(f"'{query}' {reason}. Available:\n  {names}")
+
+def load_settings(
+    path: Path = ROOT / "config.json", model_override: Path | None = None
+) -> Settings:
     raw = json.loads(path.read_text(encoding="utf-8"))
     model = raw.get("model_path")
-    model_path = (ROOT / model) if model else _find_model(ROOT / "models")
+    if model_override:  # chosen at launch: wins over the config
+        model_path = model_override
+    elif model:
+        model_path = ROOT / model
+    else:
+        model_path = _find_model(ROOT / "models")
     threads = raw.get("n_threads") or max(1, (os.cpu_count() or 2) // 2)
 
     stt_raw = raw.get("stt", {})

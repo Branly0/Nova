@@ -1,6 +1,6 @@
 {
   "provider": "local",
-  "model_path": null,
+  "model_path": "models/Qwen3-8B-Q4_K_M.gguf",
   "n_ctx": 4096,
   "n_threads": null,
   "temperature": 0.7,
