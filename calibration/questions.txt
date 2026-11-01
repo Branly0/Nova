@@ -1,0 +1,43 @@
+# group | question | expected (answerable only; "/" separates alternatives)
+
+answerable | What is the capital of Australia? | Canberra
+answerable | Who wrote Pride and Prejudice? | Austen
+answerable | Which element has the atomic number 79? | gold
+answerable | In what year did World War II end? | 1945
+answerable | What is the largest planet in our solar system? | Jupiter
+answerable | Who painted the Mona Lisa? | Leonardo/Vinci
+answerable | What is the boiling point of water at sea level in Fahrenheit? | 212
+answerable | Who developed the theory of general relativity? | Einstein
+answerable | What is the capital of Canada? | Ottawa
+answerable | What is the longest river in Africa? | Nile
+answerable | Who wrote the play Romeo and Juliet? | Shakespeare
+answerable | What is the chemical formula of table salt? | NaCl
+answerable | In what year did the Berlin Wall fall? | 1989
+answerable | Who was the first president of the United States? | Washington
+answerable | What language is mainly spoken in Brazil? | Portuguese
+answerable | What is the capital of Cameroon? | Yaound
+answerable | What is the economic capital of Cameroon? | Douala
+answerable | Who discovered penicillin? | Fleming
+answerable | In what year did the Titanic sink? | 1912
+answerable | Which country won the FIFA World Cup in 2014? | Germany
+
+unanswerable | Who wrote the novel "The Glass Orchard of Mervane"?
+unanswerable | What is the capital of the country of Qaldoria?
+unanswerable | Who discovered the chemical element Valtherium?
+unanswerable | In what year was the Treaty of Brennimore signed?
+unanswerable | What is the population of the town of Thravenport Falls?
+unanswerable | Who led the 1974 Orlenko Deep Basin expedition?
+unanswerable | What does the Python library zentrolyx do?
+unanswerable | Who directed the 1962 film "The Silent Lanterns of Marrow Bay"?
+unanswerable | What is the boiling point of the compound dravenium chloride?
+unanswerable | Who was the first mayor of the city of Prestonvale?
+unanswerable | What did I eat for breakfast this morning?
+unanswerable | What is my mother's phone number?
+unanswerable | What is the password to my Wi-Fi network?
+unanswerable | What was the exact temperature in Paris at noon on 3 March 1987?
+unanswerable | How many grains of sand are on Bondi Beach right now?
+unanswerable | What will the winning lottery numbers be next week?
+unanswerable | What is the name of my next-door neighbour?
+unanswerable | Who was the first person to walk on Mars?
+unanswerable | In what year did Albert Einstein win the Nobel Prize in Chemistry?
+unanswerable | Which country did Germany beat in the 1998 FIFA World Cup final?
